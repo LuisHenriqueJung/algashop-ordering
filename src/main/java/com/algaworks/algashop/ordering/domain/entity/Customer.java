@@ -1,8 +1,14 @@
 package com.algaworks.algashop.ordering.domain.entity;
 
+import com.algaworks.algashop.ordering.domain.validator.FieldValidations;
+import org.apache.commons.validator.routines.EmailValidator;
+
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.util.Objects;
 import java.util.UUID;
+
+import static com.algaworks.algashop.ordering.domain.exception.ErrorMessages.*;
 
 public class Customer {
     private UUID id;
@@ -17,165 +23,181 @@ public class Customer {
     private OffsetDateTime archivedAt;
     private Integer loyaltyPoints;
 
-    public Customer(UUID id, String fullName, LocalDate birthDate, String email, String phone, String document, Boolean promotionNotificationsAllowed, OffsetDateTime registeredAt) {
-        this.id = id;
-        this.fullName = fullName;
-        this.birthDate = birthDate;
-        this.email = email;
-        this.phone = phone;
-        this.document = document;
-        this.promotionNotificationsAllowed = promotionNotificationsAllowed;
-        this.registeredAt = registeredAt;
+    public Customer(UUID id, String fullName, LocalDate birthDate, String email,
+                    String phone, String document, Boolean promotionNotificationsAllowed,
+                    OffsetDateTime registeredAt) {
+        this.setId(id);
+        this.setFullName(fullName);
+        this.setBirthDate(birthDate);
+        this.setEmail(email);
+        this.setPhone(phone);
+        this.setDocument(document);
+        this.setPromotionNotificationsAllowed(promotionNotificationsAllowed);
+        this.setRegisteredAt(registeredAt);
+        this.setArchived(false);
+        this.setLoyaltyPoints(0);
     }
 
-    public Customer(UUID id, String fullName, LocalDate birthDate, String email, String phone, String document, Boolean promotionNotificationsAllowed, Boolean archived, OffsetDateTime registeredAt, OffsetDateTime archivedAt, Integer loyaltyPoints) {
-        this.id = id;
-        this.fullName = fullName;
-        this.birthDate = birthDate;
-        this.email = email;
-        this.phone = phone;
-        this.document = document;
-        this.promotionNotificationsAllowed = promotionNotificationsAllowed;
-        this.archived = archived;
-        this.registeredAt = registeredAt;
-        this.archivedAt = archivedAt;
-        this.loyaltyPoints = loyaltyPoints;
+    public Customer(UUID id, String fullName, LocalDate birthDate, String email, String phone,
+                    String document, Boolean promotionNotificationsAllowed, Boolean archived,
+                    OffsetDateTime registeredAt, OffsetDateTime archivedAt, Integer loyaltyPoints) {
+        this.setId(id);
+        this.setFullName(fullName);
+        this.setBirthDate(birthDate);
+        this.setEmail(email);
+        this.setPhone(phone);
+        this.setDocument(document);
+        this.setPromotionNotificationsAllowed(promotionNotificationsAllowed);
+        this.setArchived(archived);
+        this.setRegisteredAt(registeredAt);
+        this.setArchivedAt(archivedAt);
+        this.setLoyaltyPoints(loyaltyPoints);
     }
 
-    public void addLoyaltyPoints(Integer points) {
-        if (this.loyaltyPoints == null) {
-            this.loyaltyPoints = points;
-        }
-        this.loyaltyPoints += points;
+    public void addLoayltyPoints(Integer points) {
+
     }
 
     public void archive() {
-        this.archived = true;
-        this.archivedAt = OffsetDateTime.now();
+
     }
 
     public void enablePromotionNotifications() {
-        this.promotionNotificationsAllowed = true;
+        this.setPromotionNotificationsAllowed(true);
     }
 
     public void disablePromotionNotifications() {
-        this.promotionNotificationsAllowed = false;
-    }
-
-
-    public void changeEmail(String email) {
-        this.email = email;
-    }
-
-    public void changePhone(String phone) {
-        this.phone = phone;
-    }
-
-    public void changeDocument(String document) {
-        this.document = document;
+        this.setPromotionNotificationsAllowed(false);
     }
 
     public void changeName(String fullName) {
-        this.fullName = fullName;
+        this.setFullName(fullName);
     }
 
-    private UUID getId() {
+    public void changeEmail(String email) {
+        this.setEmail(email);
+    }
+
+    public void changePhone(String phone) {
+        this.setPhone(phone);
+    }
+
+    public UUID id() {
         return id;
     }
 
-    private void setId(UUID id) {
-        this.id = id;
-    }
-
-    private String getFullName() {
+    public String fullName() {
         return fullName;
     }
 
-    private void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    private LocalDate getBirthDate() {
+    public LocalDate birthDate() {
         return birthDate;
     }
 
-    private void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    private String getEmail() {
+    public String email() {
         return email;
     }
 
-    private void setEmail(String email) {
-        this.email = email;
-    }
-
-    private String getPhone() {
+    public String phone() {
         return phone;
     }
 
-    private void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    private String getDocument() {
+    public String document() {
         return document;
     }
 
-    private void setDocument(String document) {
-        this.document = document;
-    }
-
-    private Boolean isPromotionNotificationsAllowed() {
+    public Boolean isPromotionNotificationsAllowed() {
         return promotionNotificationsAllowed;
     }
 
-    private void setPromotionNotificationsAllowed(Boolean promotionNotificationsAllowed) {
-        this.promotionNotificationsAllowed = promotionNotificationsAllowed;
-    }
-
-    private Boolean isArchived() {
+    public Boolean isArchived() {
         return archived;
     }
 
-    private void setArchived(Boolean archived) {
-        this.archived = archived;
-    }
-
-    private OffsetDateTime getRegisteredAt() {
+    public OffsetDateTime registeredAt() {
         return registeredAt;
     }
 
-    private void setRegisteredAt(OffsetDateTime registeredAt) {
-        this.registeredAt = registeredAt;
+    public OffsetDateTime archivedAt() {
+        return archivedAt;
     }
 
-    private OffsetDateTime getArchivedAt() {
-        return archivedAt;
+    public Integer loyaltyPoints() {
+        return loyaltyPoints;
+    }
+
+    private void setId(UUID id) {
+        Objects.requireNonNull(id);
+        this.id = id;
+    }
+
+    private void setFullName(String fullName) {
+        Objects.requireNonNull(fullName, VALIDATION_ERROR_FULLNAME_IS_NULL);
+        if(fullName.isBlank()) {
+            throw new IllegalArgumentException(VALIDATION_ERROR_FULLNAME_IS_BLANK);
+        }
+        this.fullName = fullName;
+    }
+
+    private void setBirthDate(LocalDate birthDate) {
+        if (birthDate == null) {
+            this.birthDate = null;
+            return;
+        }
+        if (birthDate.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException(VALIDATION_ERROR_BIRTHDATE_MUST_IN_PAST);
+        }
+        this.birthDate = birthDate;
+    }
+
+    private void setEmail(String email) {
+        FieldValidations.requiresValidEmail(email, VALIDATION_ERROR_EMAIL_IS_INVALID);
+        this.email = email;
+    }
+
+    private void setPhone(String phone) {
+        Objects.requireNonNull(phone);
+        this.phone = phone;
+    }
+
+    private void setDocument(String document) {
+        Objects.requireNonNull(document);
+        this.document = document;
+    }
+
+    private void setPromotionNotificationsAllowed(Boolean promotionNotificationsAllowed) {
+        Objects.requireNonNull(promotionNotificationsAllowed);
+        this.promotionNotificationsAllowed = promotionNotificationsAllowed;
+    }
+
+    private void setArchived(Boolean archived) {
+        Objects.requireNonNull(archived);
+        this.archived = archived;
+    }
+
+    private void setRegisteredAt(OffsetDateTime registeredAt) {
+        Objects.requireNonNull(registeredAt);
+        this.registeredAt = registeredAt;
     }
 
     private void setArchivedAt(OffsetDateTime archivedAt) {
         this.archivedAt = archivedAt;
     }
 
-    private Integer getLoyaltyPoints() {
-        return loyaltyPoints;
-    }
-
     private void setLoyaltyPoints(Integer loyaltyPoints) {
+        Objects.requireNonNull(loyaltyPoints);
         this.loyaltyPoints = loyaltyPoints;
     }
 
     @Override
-    public final boolean equals(Object o) {
-        if (!(o instanceof Customer customer)) return false;
-
-        return id.equals(customer.id);
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Customer customer = (Customer) o;
+        return Objects.equals(id, customer.id);
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return Objects.hashCode(id);
     }
 }
