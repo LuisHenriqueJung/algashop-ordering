@@ -1,4 +1,4 @@
-package com.algaworks.algashop.ordering.ordering.domain;
+package com.algaworks.algashop.ordering.domain.entity;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;

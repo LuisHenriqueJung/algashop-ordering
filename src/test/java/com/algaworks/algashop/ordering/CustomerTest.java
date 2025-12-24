@@ -1,6 +1,6 @@
 package com.algaworks.algashop.ordering;
 
-import com.algaworks.algashop.ordering.ordering.domain.Customer;
+import com.algaworks.algashop.ordering.domain.entity.Customer;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
