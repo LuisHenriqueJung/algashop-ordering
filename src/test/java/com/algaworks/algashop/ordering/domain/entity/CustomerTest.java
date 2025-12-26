@@ -2,6 +2,7 @@ package com.algaworks.algashop.ordering.domain.entity;
 
 
 import com.algaworks.algashop.ordering.domain.exception.CustomerArchivedException;
+import com.algaworks.algashop.ordering.domain.exception.LoyaltyPointsShouldBePositiveException;
 import com.algaworks.algashop.ordering.domain.utility.IdGenerator;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -102,6 +103,28 @@ class CustomerTest {
         Assertions.assertThatExceptionOfType(CustomerArchivedException.class)
                 .isThrownBy(customer::disablePromotionNotifications);
 
+    }
+
+    @Test
+    void given_nonPositiveLoyaltyPoints_whenTryToUpdate_shouldGenerateException(){
+        Customer customer = new Customer(
+                IdGenerator.generateTimeBasedUUID(),
+                "John Doe",
+                LocalDate.of(2000, 1, 1),
+                "luis@rsdata.inf.br",
+                "12345678901",
+                "12345678901",
+                true,
+                OffsetDateTime.now()
+        );
+        customer.addLoyaltyPoints(10);
+        Assertions.assertThat(customer.loyaltyPoints()).isEqualTo(10);
+        customer.addLoyaltyPoints(20);
+        Assertions.assertThat(customer.loyaltyPoints()).isEqualTo(30);
+        Assertions.assertThatExceptionOfType(LoyaltyPointsShouldBePositiveException.class)
+                .isThrownBy(() -> customer.addLoyaltyPoints(0));
+        Assertions.assertThatExceptionOfType(LoyaltyPointsShouldBePositiveException.class)
+                .isThrownBy(() -> customer.addLoyaltyPoints(-1));
     }
 
 }
