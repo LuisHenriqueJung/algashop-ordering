@@ -22,4 +22,16 @@ public class FieldValidations {
             throw new IllegalArgumentException(errorMessage);
         }
     }
+
+    public static void requiresValidPhone(String phone) {
+        requiresValidPhone(phone,null);
+    }
+
+    public static void requiresValidPhone(String phone, String errorMessage) {
+        Objects.requireNonNull(phone, errorMessage);
+        if (phone.isBlank()) {
+            throw new IllegalArgumentException(errorMessage);
+        }
+
+    }
 }
