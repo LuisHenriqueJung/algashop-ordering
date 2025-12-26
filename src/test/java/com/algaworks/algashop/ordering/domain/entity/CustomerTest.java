@@ -11,7 +11,7 @@ import java.time.OffsetDateTime;
 class CustomerTest {
 
     @Test
-    void given_invalid_email_whenTyToCreate_should_throw_exception() {
+    void given_invalid_email_whenTryToCreate_should_throw_exception() {
         Assertions.assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> {
                     new Customer(
