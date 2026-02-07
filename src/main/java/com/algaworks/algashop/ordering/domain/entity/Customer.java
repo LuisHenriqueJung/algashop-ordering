@@ -22,11 +22,18 @@ public class Customer {
     private LoyaltyPoints loyaltyPoints;
     private Address address;
 
-    public static Customer brandNew( FullName fullName, BirthDate birthDate, Email email,
+    public static Customer brandNew(FullName fullName, BirthDate birthDate, Email email,
                                     Phone phone, Document document, Boolean promotionNotificationsAllowed,
-                                     Address address) {
+                                    Address address) {
         return new Customer(new CustomerId(), fullName, birthDate, email, phone, document, promotionNotificationsAllowed,
                 false, OffsetDateTime.now(), null, LoyaltyPoints.ZERO, address);
+    }
+
+    public static Customer existing(CustomerId id, FullName fullName, BirthDate birthDate, Email email, Phone phone,
+                                    Document document, Boolean promotionNotificationsAllowed, Boolean archived,
+                                    OffsetDateTime registeredAt, OffsetDateTime archivedAt, LoyaltyPoints loyaltyPoints, Address address) {
+        return new Customer(id, fullName, birthDate, email, phone, document, promotionNotificationsAllowed, archived,
+                registeredAt, archivedAt, loyaltyPoints, address);
     }
 
 

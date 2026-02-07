@@ -8,6 +8,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -41,13 +42,18 @@ class CustomerTest {
 
     @Test
     void given_invalid_email_whenTryToChange_should_throw_exception() {
-        Customer customer = Customer.brandNew(
+        Customer customer = Customer.existing(
+                new CustomerId(),
                 new FullName("John", "Doe"),
                 new BirthDate(LocalDate.of(2000, 1, 1)),
                 new Email("luis@rsdata.inf.br"),
                 new Phone("12345678901"),
                 new Document("12345678901"),
                 true,
+                false,
+                OffsetDateTime.now(),
+                null,
+                LoyaltyPoints.ZERO,
                 Address.builder()
                         .street("Bourbon Street")
                         .number("122")
@@ -68,13 +74,18 @@ class CustomerTest {
 
     @Test
     void given_unarchivedCusomer_whenArchive_ShouldAninymize() {
-        Customer customer =  Customer.brandNew(
+        Customer customer =  Customer.existing(
+                new CustomerId(),
                 new FullName("John", "Doe"),
                 new BirthDate(LocalDate.of(2000, 1, 1)),
                 new Email("luis@rsdata.inf.br"),
                 new Phone("12345678901"),
                 new Document("12345678901"),
                 true,
+                false,
+                OffsetDateTime.now(),
+                null,
+                LoyaltyPoints.ZERO,
                 Address.builder()
                         .street("Bourbon Street")
                         .number("122")
@@ -102,13 +113,18 @@ class CustomerTest {
 
     @Test
     void given_archivedCustomer_whenTryToUpdate_shouldGenerateException() {
-        Customer customer = Customer.brandNew(
+        Customer customer = Customer.existing(
+                new CustomerId(),
                 new FullName("John", "Doe"),
                 new BirthDate(LocalDate.of(2000, 1, 1)),
                 new Email("luis@rsdata.inf.br"),
                 new Phone("12345678901"),
                 new Document("12345678901"),
                 true,
+                true,
+                OffsetDateTime.now(),
+                OffsetDateTime.now(),
+                LoyaltyPoints.ZERO,
                 Address.builder()
                         .street("Bourbon Street")
                         .number("122")
@@ -120,7 +136,6 @@ class CustomerTest {
                         .country("Country")
                         .build()
         );
-        customer.archive();
         Assertions.assertThatExceptionOfType(CustomerArchivedException.class)
                 .isThrownBy(customer::archive);
         Assertions.assertThatExceptionOfType(CustomerArchivedException.class)
@@ -139,13 +154,18 @@ class CustomerTest {
 
     @Test
     void given_nonPositiveLoyaltyPoints_whenTryToUpdate_shouldGenerateException() {
-        Customer customer = Customer.brandNew(
+        Customer customer = Customer.existing(
+                new CustomerId(),
                 new FullName("John", "Doe"),
                 new BirthDate(LocalDate.of(2000, 1, 1)),
                 new Email("luis@rsdata.inf.br"),
                 new Phone("12345678901"),
                 new Document("12345678901"),
                 true,
+                false,
+                OffsetDateTime.now(),
+                null,
+                LoyaltyPoints.ZERO,
                 Address.builder()
                         .street("Bourbon Street")
                         .number("122")
