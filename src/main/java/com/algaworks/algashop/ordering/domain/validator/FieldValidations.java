@@ -34,4 +34,11 @@ public class FieldValidations {
         }
 
     }
+
+    public static void requiresNonBlank(String value){
+        Objects.requireNonNull(value);
+        if (value.isBlank()) {
+            throw new IllegalArgumentException();
+        }
+    }
 }

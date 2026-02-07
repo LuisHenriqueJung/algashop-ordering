@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.OffsetDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.InstanceOfAssertFactories.map;
 
 class CustomerTest {
 
@@ -26,7 +27,17 @@ class CustomerTest {
                             new Phone("12345678901"),
                             new Document("12345678901"),
                             true,
-                            OffsetDateTime.now()
+                            OffsetDateTime.now(),
+                            Address.builder()
+                                    .street("Bourbon Street")
+                                    .number("122")
+                                    .neighborhood("Neighborhood")
+                                    .complement("Complement")
+                                    .zipCode(new ZipCode("12345"))
+                                    .city("City")
+                                    .state("State")
+                                    .country("Country")
+                                    .build()
                     );
 
                 });
@@ -42,7 +53,17 @@ class CustomerTest {
                 new Phone("12345678901"),
                 new Document("12345678901"),
                 true,
-                OffsetDateTime.now()
+                OffsetDateTime.now(),
+                Address.builder()
+                        .street("Bourbon Street")
+                        .number("122")
+                        .neighborhood("Neighborhood")
+                        .complement("Complement")
+                        .zipCode(new ZipCode("12345"))
+                        .city("City")
+                        .state("State")
+                        .country("Country")
+                        .build()
         );
         Assertions.assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> {
@@ -61,7 +82,17 @@ class CustomerTest {
                 new Phone("12345678901"),
                 new Document("12345678901"),
                 true,
-                OffsetDateTime.now()
+                OffsetDateTime.now(),
+                Address.builder()
+                        .street("Bourbon Street")
+                        .number("122")
+                        .neighborhood("Neighborhood")
+                        .complement("Complement")
+                        .zipCode(new ZipCode("12345"))
+                        .city("City")
+                        .state("State")
+                        .country("Country")
+                        .build()
         );
         customer.archive();
         Assertions.assertWith(customer,
@@ -72,7 +103,8 @@ class CustomerTest {
                 c -> assertThat(c.birthDate()).isNull(),
                 c -> assertThat(c.isPromotionNotificationsAllowed()).isFalse(),
                 c -> assertThat(c.archivedAt()).isNotNull(),
-                c -> assertThat(c.loyaltyPoints().value()).isZero()
+                c -> assertThat(c.loyaltyPoints().value()).isZero(),
+                c -> assertThat(c.address().number()).isEqualTo("Anon")
         );
     }
 
@@ -86,7 +118,17 @@ class CustomerTest {
                 new Phone("12345678901"),
                 new Document("12345678901"),
                 true,
-                OffsetDateTime.now()
+                OffsetDateTime.now(),
+                Address.builder()
+                        .street("Bourbon Street")
+                        .number("122")
+                        .neighborhood("Neighborhood")
+                        .complement("Complement")
+                        .zipCode(new ZipCode("12345"))
+                        .city("City")
+                        .state("State")
+                        .country("Country")
+                        .build()
         );
         customer.archive();
         Assertions.assertThatExceptionOfType(CustomerArchivedException.class)
@@ -115,7 +157,17 @@ class CustomerTest {
                 new Phone("12345678901"),
                 new Document("12345678901"),
                 true,
-                OffsetDateTime.now()
+                OffsetDateTime.now(),
+                Address.builder()
+                        .street("Bourbon Street")
+                        .number("122")
+                        .neighborhood("Neighborhood")
+                        .complement("Complement")
+                        .zipCode(new ZipCode("12345"))
+                        .city("City")
+                        .state("State")
+                        .country("Country")
+                        .build()
         );
         customer.addLoyaltyPoints(new LoyaltyPoints(10));
         Assertions.assertThat(customer.loyaltyPoints().value()).isEqualTo(10);
