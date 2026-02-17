@@ -17,7 +17,7 @@ class MoneyTest {
 
     @Test
     void given_nullValue_whenTryToCreate_shouldThrowException() {
-        assertThrows(NullPointerException.class, () -> new Money(String.valueOf(null)));
+        assertThrows(NullPointerException.class, () -> new Money((String) null));
     }
 
     @Test
