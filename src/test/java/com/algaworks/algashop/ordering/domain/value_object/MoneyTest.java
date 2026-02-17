@@ -59,4 +59,30 @@ class MoneyTest {
                 c -> assertThat(c.value()).isEqualTo(new BigDecimal("20.00")));
     }
 
+    @Test
+    void given_nullMoney_whenTryToAdd_shouldThrowException() {
+        assertThrows(NullPointerException.class, () -> new Money("10.00").add(null));
+    }
+
+    @Test
+    void given_nullMoney_whenTryToAdd_shouldNotThrowException() {
+        assertDoesNotThrow(() -> new Money("10.00").add(new Money("10.00")));
+    }
+
+    @Test
+    void given_nullMoney_whenTryToDivide_shouldThrowException() {
+        assertThrows(NullPointerException.class, () -> new Money("10.00").divide((Money)null));
+    }
+
+    @Test
+    void given_nullMoney_whenTryToDivide_shouldNotThrowException() {
+        assertDoesNotThrow(() -> new Money("10.00").divide(new Money("10.00")));
+    }
+
+
+    @Test
+    void given_nullQuantityToMultiply_whenTryToMultiply_shouldThrowException() {
+        assertThrows(NullPointerException.class, () -> new Money("10.00").multiply(null));
+    }
+
 }
