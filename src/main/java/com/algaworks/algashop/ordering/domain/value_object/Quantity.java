@@ -3,6 +3,7 @@ package com.algaworks.algashop.ordering.domain.value_object;
 public record Quantity(int value) implements Comparable<Quantity> {
 
     public static final Quantity ZERO = new Quantity();
+    public static final Quantity ONE = new Quantity(1);
 
     public Quantity() {
         this(0);
