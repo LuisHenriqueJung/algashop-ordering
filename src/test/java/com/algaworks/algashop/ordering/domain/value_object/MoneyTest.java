@@ -31,6 +31,18 @@ class MoneyTest {
     }
 
     @Test
+    void given_ValueWithMoreThanTwoDecimals_whenTryToCreate_shouldRoundToTwoDecimals() {
+        // given
+        BigDecimal value = new BigDecimal("10.555");
+
+        // when
+        Money money = new Money(value);
+
+        // then
+        Assertions.assertThat(money.value()).isEqualByComparingTo(new BigDecimal("10.56"));
+    }
+
+    @Test
     void given_valueWithMoreThanTwoDecimals_whenTryToCreate_shouldBeRounded() {
         Money money = new Money("10.901040");
         Assertions.assertWith(money,
