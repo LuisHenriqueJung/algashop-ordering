@@ -1,5 +1,6 @@
 package com.algaworks.algashop.ordering.domain.entity;
 
+
 import com.algaworks.algashop.ordering.domain.value_object.*;
 import com.algaworks.algashop.ordering.domain.value_object.id.CustomerId;
 
@@ -13,70 +14,73 @@ public class CustomerTestDataBuilder {
 
     public static Customer.BrandNewCustomerBuilder brandNewCustomer() {
         return Customer.brandNew()
-                .fullName(new FullName("John", "Doe"))
-                .birthDate(new BirthDate(LocalDate.of(2000, 1, 1)))
-                .email(new Email("luis@rsdata.inf.br"))
-                .phone(new Phone("12345678901"))
-                .document(new Document("12345678901"))
+                .fullName(new FullName("John","Doe"))
+                .birthDate(new BirthDate(LocalDate.of(1991, 7,5)))
+                .email(new Email("johndoe@email.com"))
+                .phone(new Phone("478-256-2604"))
+                .document(new Document("255-08-0578"))
                 .promotionNotificationsAllowed(true)
                 .address(Address.builder()
                         .street("Bourbon Street")
-                        .number("122")
-                        .neighborhood("Neighborhood")
-                        .complement("Complement")
+                        .number("1134")
+                        .neighborhood("North Ville")
+                        .city("York")
+                        .country("United States")
+                        .state("South California")
                         .zipCode(new ZipCode("12345"))
-                        .city("City")
-                        .state("State")
-                        .country("Country")
+                        .complement("Apt. 114")
                         .build());
     }
 
-    public static Customer.ExistingCustomerBuilder existingCustomerBuilder(){
+    public static Customer.ExistingCustomerBuilder existingCustomer() {
         return Customer.existing()
                 .id(new CustomerId())
-                .fullName(new FullName("John", "Doe"))
-                .birthDate(new BirthDate(LocalDate.of(2000, 1, 1)))
-                .email(new Email("luis@rsdata.inf.br"))
-                .phone(new Phone("12345678901"))
-                .document(new Document("12345678901"))
+                .registeredAt(OffsetDateTime.now())
                 .promotionNotificationsAllowed(true)
                 .archived(false)
-                .registeredAt(OffsetDateTime.now())
+                .archivedAt(null)
+                .fullName(new FullName("John","Doe"))
+                .birthDate(new BirthDate(LocalDate.of(1991, 7,5)))
+                .email(new Email("johndoe@email.com"))
+                .phone(new Phone("478-256-2604"))
+                .document(new Document("255-08-0578"))
+                .promotionNotificationsAllowed(true)
                 .loyaltyPoints(LoyaltyPoints.ZERO)
                 .address(Address.builder()
                         .street("Bourbon Street")
-                        .number("122")
-                        .neighborhood("Neighborhood")
-                        .complement("Complement")
+                        .number("Anonymized")
+                        .neighborhood("North Ville")
+                        .city("York")
+                        .state("South California")
                         .zipCode(new ZipCode("12345"))
-                        .city("City")
-                        .state("State")
-                        .country("Country")
-                        .build());
+                        .complement(null)
+                        .country("United States")
+                        .build())
+                ;
     }
 
-    public static Customer.ExistingCustomerBuilder existingAnonymizedCustomer(){
+    public static Customer.ExistingCustomerBuilder existingAnonymizedCustomer() {
         return Customer.existing()
                 .id(new CustomerId())
-                .fullName(new FullName("An", "Doe"))
-                .birthDate(new BirthDate(LocalDate.of(2000, 1, 1)))
-                .email(new Email("luis@rsdata.inf.br"))
-                .phone(new Phone("12345678901"))
-                .document(new Document("12345678901"))
-                .promotionNotificationsAllowed(true)
+                .fullName(new FullName("Anonymous", "Anonymous"))
+                .birthDate(null)
+                .email(new Email("anonymous@anonymous.com"))
+                .phone(new Phone("000-000-0000"))
+                .document(new Document("000-00-0000"))
+                .promotionNotificationsAllowed(false)
                 .archived(true)
                 .registeredAt(OffsetDateTime.now())
-                .loyaltyPoints(LoyaltyPoints.ZERO)
-
+                .archivedAt(OffsetDateTime.now())
+                .loyaltyPoints(new LoyaltyPoints(10))
                 .address(Address.builder()
                         .street("Bourbon Street")
-                        .number("122")
-                        .neighborhood("Neighborhood")
-                        .complement("Complement")
+                        .number("1134")
+                        .country("United States")
+                        .neighborhood("North Ville")
+                        .city("York")
+                        .state("South California")
                         .zipCode(new ZipCode("12345"))
-                        .city("City")
-                        .state("State")
-                        .country("Country")
+                        .complement("Apt. 114")
                         .build());
     }
 }

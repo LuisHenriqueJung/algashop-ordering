@@ -25,14 +25,14 @@ public record Money(BigDecimal value) implements Comparable<Money> {
         Objects.requireNonNull(value);
         value = value.setScale(SCALE, ROUNDING_MODE);
         if (value.compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(ErrorMessages.MONEY_SHOULD_BE_POSITIVE);
         }
     }
 
     public Money multiply(Quantity quantity) {
         Objects.requireNonNull(quantity);
         if (quantity.value() < 1) {
-            throw new IllegalArgumentException(ErrorMessages.MONEY_SHOULD_BE_POSITIVE);
+            throw new IllegalArgumentException(ErrorMessages.QUANTITY_SHOULD_BE_POSITIVE);
         }
         return new Money(this.value.multiply(new BigDecimal(quantity.value())));
     }

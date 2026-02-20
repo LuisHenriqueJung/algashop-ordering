@@ -67,7 +67,6 @@ public class Customer {
         setPromotionNotificationsAllowed(false);
         setLoyaltyPoints(LoyaltyPoints.ZERO);
         setBirthDate(null);
-        this.setAddress(this.address.toBuilder().number("Anon").complement(null).build());
 
     }
 

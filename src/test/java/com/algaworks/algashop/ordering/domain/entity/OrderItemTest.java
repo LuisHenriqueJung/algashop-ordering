@@ -16,7 +16,7 @@ class OrderItemTest {
                 .productId(new ProductId())
                 .productName(new ProductName("Mouse "))
                 .price(new Money())
-                .quantity(new Quantity())
+                .quantity(new Quantity(1))
                 .build();
     }
 

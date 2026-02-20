@@ -11,4 +11,8 @@ public class ErrorMessages {
     public static final String DOCUMENT_IS_NULL = "Document cannot be null";
     public static final String DOCUMENT_IS_BLANK = "Document cannot be blank";
     public static final String MONEY_SHOULD_BE_POSITIVE = "Money should be positive";
+    public static final String QUANTITY_SHOULD_BE_POSITIVE = "Quantity should be positive";
+    public static final String ORDER_STATUS_CANNOT_BE_CHANGED = "Cannot change order %s status from %s to %s";
+    public static final String ORDER_INVALID_SHIPPING_DELIVERY_DATE_CANNOT_BE_IN_PAST = "Order %s invalid shipping delivery date cannot be in past";
+    public static final String ORDER_CANNOT_BE_PLACED_BECAUSE_HAS_NO_ITEMS = "Order %s cannot be placed, because it has no items";
 }
