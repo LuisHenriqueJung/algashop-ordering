@@ -15,4 +15,10 @@ public class ErrorMessages {
     public static final String ORDER_STATUS_CANNOT_BE_CHANGED = "Cannot change order %s status from %s to %s";
     public static final String ORDER_INVALID_SHIPPING_DELIVERY_DATE_CANNOT_BE_IN_PAST = "Order %s invalid shipping delivery date cannot be in past";
     public static final String ORDER_CANNOT_BE_PLACED_BECAUSE_HAS_NO_ITEMS = "Order %s cannot be placed, because it has no items";
+    public static final String ORDER_CANNOT_BE_PLACED_BECAUSE_HAS_NO_SHIPPING_INFO = "Order %s cannot be placed, because it has no shipping info";
+    public static final String ORDER_CANNOT_BE_PLACED_BECAUSE_HAS_NO_BILLING_INFO = "Order %s cannot be placed, because it has no billing info";
+    public static final String ORDER_CANNOT_BE_PLACED_BECAUSE_HAS_NO_PAYMENT_METHOD = "Order %s cannot be placed, because it has no payment method";
+    public static final String ORDER_CANNOT_BE_PLACED_BECAUSE_HAS_NO_CUSTOMER = "Order %s cannot be placed, because it has no customer";
+    public static final String ORDER_CANNOT_BE_PLACED_BECAUSE_HAS_NO_SHIPPING_COST = "Order %s cannot be placed, because it has no shipping cost";
+    public static final String ORDER_CANNOT_BE_PLACED_BECAUSE_HAS_NO_EXPECTED_DELIVERY_DATE = "Order %s cannot be placed, because it has no expected delivery date";
 }

@@ -113,17 +113,33 @@ public class Order {
 
 
     public void place() {
-        Objects.requireNonNull(this.billing);
-        Objects.requireNonNull(this.shipping);
-        Objects.requireNonNull(this.paymentMethod);
-        Objects.requireNonNull(this.shippingCost);
-        Objects.requireNonNull(this.expectedDeliveryDate);
-        Objects.requireNonNull(this.items);
-        if(this.items.isEmpty()){
-            throw new OrderCannotBePlacedException(this.id());
-        }
+        verifyIfCanBePlaced();
         this.setPlacedAt(OffsetDateTime.now());
         this.changeStatus(OrderStatus.PLACED);
+    }
+
+    private void verifyIfCanBePlaced() {
+        if(this.items.isEmpty()){
+            throw OrderCannotBePlacedException.becauseHasNoItems(this.id());
+        }
+        if(this.shipping() == null){
+            throw OrderCannotBePlacedException.becauseHasNoShippingInfo(this.id());
+        }
+        if(this.shippingCost() == null){
+            throw OrderCannotBePlacedException.becauseHasNoShippingCost(this.id());
+        }
+        if(this.expectedDeliveryDate == null){
+            throw OrderCannotBePlacedException.becauseHasNoExpectedDeliveryDate(this.id());
+        }
+        if(this.paymentMethod == null){
+            throw OrderCannotBePlacedException.becauseHasNoPaymentMethod(this.id());
+        }
+        if(this.billing == null){
+            throw OrderCannotBePlacedException.becauseHasNoBillingInfo(this.id());
+        }
+        if(this.customerId == null){
+            throw OrderCannotBePlacedException.becauseHasNoCustomer(this.id());
+        }
     }
 
     public void markAsPaid() {
