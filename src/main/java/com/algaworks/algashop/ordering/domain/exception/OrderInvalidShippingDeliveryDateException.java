@@ -1,6 +1,6 @@
 package com.algaworks.algashop.ordering.domain.exception;
 
-import com.algaworks.algashop.ordering.domain.value_object.id.OrderId;
+import com.algaworks.algashop.ordering.domain.valueobject.id.OrderId;
 
 public class OrderInvalidShippingDeliveryDateException extends RuntimeException {
     public OrderInvalidShippingDeliveryDateException(String message) {

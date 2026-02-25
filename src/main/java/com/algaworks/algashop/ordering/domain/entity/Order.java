@@ -1,12 +1,13 @@
 package com.algaworks.algashop.ordering.domain.entity;
 
 import com.algaworks.algashop.ordering.domain.exception.OrderCannotBePlacedException;
+import com.algaworks.algashop.ordering.domain.exception.OrderDoesNotContainItemsException;
 import com.algaworks.algashop.ordering.domain.exception.OrderInvalidShippingDeliveryDateException;
 import com.algaworks.algashop.ordering.domain.exception.OrderStatusCannotBeChangedException;
-import com.algaworks.algashop.ordering.domain.value_object.*;
-import com.algaworks.algashop.ordering.domain.value_object.id.CustomerId;
-import com.algaworks.algashop.ordering.domain.value_object.id.OrderId;
-import com.algaworks.algashop.ordering.domain.value_object.id.ProductId;
+import com.algaworks.algashop.ordering.domain.valueobject.*;
+import com.algaworks.algashop.ordering.domain.valueobject.id.CustomerId;
+import com.algaworks.algashop.ordering.domain.valueobject.id.OrderId;
+import com.algaworks.algashop.ordering.domain.valueobject.id.OrderItemId;
 import lombok.Builder;
 
 import java.math.BigDecimal;
@@ -76,14 +77,20 @@ public class Order {
         );
     }
 
-    public void addItem(ProductId productId, ProductName productName, Money price, Quantity quantity) {
+    public void addItem(Product product, Quantity quantity) {
+        Objects.requireNonNull(product);
+        Objects.requireNonNull(quantity);
+
+        product.checkOutOfStock();
+
         OrderItem item = OrderItem.brandNew()
                 .orderId(this.id())
-                .productId(productId)
-                .productName(productName)
-                .price(price)
+                .product(product)
                 .quantity(quantity)
                 .build();
+        if(this.items == null){
+            this.items = new HashSet<>();
+        }
         this.items.add(item);
         this.recalculateTotals();
     }
@@ -111,12 +118,30 @@ public class Order {
         this.setExpectedDeliveryDate(expectedDeliveryDate);
     }
 
+    public void changeItemQuantity(OrderItemId itemId, Quantity quantity) {
+           Objects.requireNonNull(itemId);
+           Objects.requireNonNull(quantity);
+
+           OrderItem orderItem = this.findOrderItem(itemId);
+           orderItem.changeQuantity(quantity);
+           this.recalculateTotals();
+    }
+
+    private OrderItem findOrderItem(OrderItemId itemId) {
+        Objects.requireNonNull(itemId);
+        return this.items.stream()
+                .filter(i -> i.id().equals(itemId))
+                .findFirst()
+                .orElseThrow(() -> new OrderDoesNotContainItemsException(this.id,itemId));
+    }
+
 
     public void place() {
         verifyIfCanBePlaced();
         this.setPlacedAt(OffsetDateTime.now());
         this.changeStatus(OrderStatus.PLACED);
     }
+
 
     private void verifyIfCanBePlaced() {
         if(this.items.isEmpty()){

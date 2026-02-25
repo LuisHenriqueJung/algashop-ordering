@@ -1,11 +1,12 @@
 package com.algaworks.algashop.ordering.domain.entity;
 
-import com.algaworks.algashop.ordering.domain.value_object.Money;
-import com.algaworks.algashop.ordering.domain.value_object.ProductName;
-import com.algaworks.algashop.ordering.domain.value_object.Quantity;
-import com.algaworks.algashop.ordering.domain.value_object.id.OrderId;
-import com.algaworks.algashop.ordering.domain.value_object.id.OrderItemId;
-import com.algaworks.algashop.ordering.domain.value_object.id.ProductId;
+import com.algaworks.algashop.ordering.domain.valueobject.Money;
+import com.algaworks.algashop.ordering.domain.valueobject.Product;
+import com.algaworks.algashop.ordering.domain.valueobject.ProductName;
+import com.algaworks.algashop.ordering.domain.valueobject.Quantity;
+import com.algaworks.algashop.ordering.domain.valueobject.id.OrderId;
+import com.algaworks.algashop.ordering.domain.valueobject.id.OrderItemId;
+import com.algaworks.algashop.ordering.domain.valueobject.id.ProductId;
 import lombok.Builder;
 
 import java.util.Objects;
@@ -35,10 +36,19 @@ public class OrderItem {
     }
 
     @Builder(builderClassName = "BrandNewOrderItemBuilder", builderMethodName = "brandNew")
-    private static OrderItem createBrandNew(OrderId orderId, ProductId productId, ProductName productName, Money price, Quantity quantity) {
-        OrderItem orderItem = new OrderItem(new OrderItemId(), orderId, productId, productName, price, quantity, Money.ZERO);
+    private static OrderItem createBrandNew(OrderId orderId, Product product, Quantity quantity) {
+        Objects.requireNonNull(orderId);
+        Objects.requireNonNull(product);
+        Objects.requireNonNull(quantity);
+        OrderItem orderItem = new OrderItem(new OrderItemId(), orderId, product.id(), product.name(), product.price(), quantity, Money.ZERO);
         orderItem.recalculateTotals();
         return orderItem;
+    }
+
+    void changeQuantity(Quantity quantity) {
+        Objects.requireNonNull(quantity);
+        this.setQuantity(quantity);
+        this.recalculateTotals();
     }
 
     private void recalculateTotals(){

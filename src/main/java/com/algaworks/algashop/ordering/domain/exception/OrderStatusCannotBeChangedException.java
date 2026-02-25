@@ -1,7 +1,7 @@
 package com.algaworks.algashop.ordering.domain.exception;
 
 import com.algaworks.algashop.ordering.domain.entity.OrderStatus;
-import com.algaworks.algashop.ordering.domain.value_object.id.OrderId;
+import com.algaworks.algashop.ordering.domain.valueobject.id.OrderId;
 
 public class OrderStatusCannotBeChangedException extends DomainException {
     public OrderStatusCannotBeChangedException(OrderId orderId, OrderStatus currentStatus, OrderStatus newStatus) {

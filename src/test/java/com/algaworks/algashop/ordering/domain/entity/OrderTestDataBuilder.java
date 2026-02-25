@@ -1,8 +1,7 @@
 package com.algaworks.algashop.ordering.domain.entity;
 
-import com.algaworks.algashop.ordering.domain.value_object.*;
-import com.algaworks.algashop.ordering.domain.value_object.id.CustomerId;
-import com.algaworks.algashop.ordering.domain.value_object.id.ProductId;
+import com.algaworks.algashop.ordering.domain.valueobject.*;
+import com.algaworks.algashop.ordering.domain.valueobject.id.CustomerId;
 
 import java.time.LocalDate;
 
@@ -37,11 +36,13 @@ public class OrderTestDataBuilder {
         order.changePaymentMethod(paymentMethod);
 
         if (withItems) {
-            order.addItem(new ProductId(), new ProductName("Notebook X11"),
-                    new Money("3000"), new Quantity(2));
+            order.addItem(ProductTestDataBuilder.aProduct().build(),
+                    new Quantity(2)
+            );
 
-            order.addItem(new ProductId(), new ProductName("4GB RAM"),
-                    new Money("200"), new Quantity(1));
+            order.addItem(ProductTestDataBuilder.aProductAltRamMemory().build(),
+                    new Quantity(1)
+            );
         }
 
         switch (this.status) {
@@ -83,7 +84,6 @@ public class OrderTestDataBuilder {
         return Address.builder()
                 .street("Bourbon Street")
                 .number("1234")
-                .country("United States")
                 .neighborhood("North Ville")
                 .complement("apt. 11")
                 .city("Montfort")
