@@ -4,14 +4,11 @@ import lombok.Builder;
 
 import java.util.Objects;
 
-@Builder
-public record ShippingInfo(FullName fullName, Document document, Phone phone, Address address) {
-
-    @Builder(toBuilder = true)
-    public ShippingInfo {
+public record Recipient(FullName fullName, Document document, Phone phone) {
+    @Builder
+    public Recipient {
         Objects.requireNonNull(fullName);
         Objects.requireNonNull(document);
         Objects.requireNonNull(phone);
-        Objects.requireNonNull(address);
     }
 }

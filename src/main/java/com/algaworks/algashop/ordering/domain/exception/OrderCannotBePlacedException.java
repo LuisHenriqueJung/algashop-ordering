@@ -27,13 +27,4 @@ public class OrderCannotBePlacedException extends DomainException {
         return new OrderCannotBePlacedException(String.format(ErrorMessages.ORDER_CANNOT_BE_PLACED_BECAUSE_HAS_NO_CUSTOMER, id));
     }
 
-    public static OrderCannotBePlacedException becauseHasNoShippingCost(OrderId id) {
-        return new OrderCannotBePlacedException(String.format(ErrorMessages.ORDER_CANNOT_BE_PLACED_BECAUSE_HAS_NO_SHIPPING_COST, id));
-    }
-
-    public static OrderCannotBePlacedException becauseHasNoExpectedDeliveryDate(OrderId id) {
-        return new OrderCannotBePlacedException(String.format(ErrorMessages.ORDER_CANNOT_BE_PLACED_BECAUSE_HAS_NO_EXPECTED_DELIVERY_DATE, id));
-    }
-
-
 }

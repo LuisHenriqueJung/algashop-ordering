@@ -8,7 +8,6 @@ public class ErrorMessages {
     public static final String VALIDATION_ERROR_PHONE_IS_INVALID = "Phone is invalid";
     public static final String CUSTOMER_ARCHIVED = "Customer already archived";
     public static final String LOYALTY_POINTS_SHOULD_BE_POSITIVE = "Loyalty points should be positive";
-    public static final String DOCUMENT_IS_NULL = "Document cannot be null";
     public static final String DOCUMENT_IS_BLANK = "Document cannot be blank";
     public static final String MONEY_SHOULD_BE_POSITIVE = "Money should be positive";
     public static final String QUANTITY_SHOULD_BE_POSITIVE = "Quantity should be positive";
@@ -19,8 +18,6 @@ public class ErrorMessages {
     public static final String ORDER_CANNOT_BE_PLACED_BECAUSE_HAS_NO_BILLING_INFO = "Order %s cannot be placed, because it has no billing info";
     public static final String ORDER_CANNOT_BE_PLACED_BECAUSE_HAS_NO_PAYMENT_METHOD = "Order %s cannot be placed, because it has no payment method";
     public static final String ORDER_CANNOT_BE_PLACED_BECAUSE_HAS_NO_CUSTOMER = "Order %s cannot be placed, because it has no customer";
-    public static final String ORDER_CANNOT_BE_PLACED_BECAUSE_HAS_NO_SHIPPING_COST = "Order %s cannot be placed, because it has no shipping cost";
-    public static final String ORDER_CANNOT_BE_PLACED_BECAUSE_HAS_NO_EXPECTED_DELIVERY_DATE = "Order %s cannot be placed, because it has no expected delivery date";
     public static final String ORDER_DOES_NOT_CONTAIN_ITEM = "Order %s does not contain item %s";
     public static final String PRODUCT_OUT_OF_STOCK = "Product %s is out of stock";
 }
