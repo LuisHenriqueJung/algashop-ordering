@@ -31,7 +31,7 @@ public class Order {
     private OffsetDateTime readyAt;
     private OffsetDateTime cancelledAt;
 
-    private BillingInfo billingInfo;
+    private Billing billing;
     private Shipping shipping;
 
     private OrderStatus status;
@@ -40,7 +40,7 @@ public class Order {
     private Set<OrderItem> items;
 
     @Builder(builderClassName = "ExistingOrderBuilder", builderMethodName = "existing")
-    public Order(OrderId id, CustomerId customerId, Money totalAmount, Quantity totalItems, OffsetDateTime placedAt, OffsetDateTime paidAt, OffsetDateTime readyAt, OffsetDateTime cancelledAt, BillingInfo billingInfo, OrderStatus status, PaymentMethod paymentMethod, Set<OrderItem> items) {
+    public Order(OrderId id, CustomerId customerId, Money totalAmount, Quantity totalItems, OffsetDateTime placedAt, OffsetDateTime paidAt, OffsetDateTime readyAt, OffsetDateTime cancelledAt, Billing billing, OrderStatus status, PaymentMethod paymentMethod, Set<OrderItem> items) {
         this.setId(id);
         this.setCustomerId(customerId);
         this.setTotalAmount(totalAmount);
@@ -49,7 +49,7 @@ public class Order {
         this.setPaidAt(paidAt);
         this.setReadyAt(readyAt);
         this.setCancelledAt(cancelledAt);
-        this.setBillingInfo(billingInfo);
+        this.setBilling(billing);
         this.setShipping(shipping);
         this.setStatus(status);
         this.setPaymentMethod(paymentMethod);
@@ -92,9 +92,9 @@ public class Order {
         this.setPaymentMethod(paymentMethod);
     }
 
-    public void changeBilling(BillingInfo billingInfo) {
-        Objects.requireNonNull(billingInfo);
-        this.setBillingInfo(billingInfo);
+    public void changeBilling(Billing billing) {
+        Objects.requireNonNull(billing);
+        this.setBilling(billing);
     }
 
     public void changeShipping(Shipping shipping) {
@@ -141,7 +141,7 @@ public class Order {
         if(this.paymentMethod == null){
             throw OrderCannotBePlacedException.becauseHasNoPaymentMethod(this.id());
         }
-        if(this.billingInfo == null){
+        if(this.billing == null){
             throw OrderCannotBePlacedException.becauseHasNoBillingInfo(this.id());
         }
         if(this.customerId == null){
@@ -228,8 +228,8 @@ public class Order {
         this.cancelledAt = cancelledAt;
     }
 
-    private void setBillingInfo(BillingInfo billingInfo) {
-        this.billingInfo = billingInfo;
+    private void setBilling(Billing billing) {
+        this.billing = billing;
     }
 
     private void setShipping(Shipping shipping) {
@@ -284,8 +284,8 @@ public class Order {
         return cancelledAt;
     }
 
-    public BillingInfo billing() {
-        return billingInfo;
+    public Billing billing() {
+        return billing;
     }
 
     public Shipping shipping() {
