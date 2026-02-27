@@ -117,12 +117,21 @@ public class Order {
         this.recalculateTotals();
     }
 
+    public void removeItem(OrderItemId orderItemId) {
+        Objects.requireNonNull(orderItemId);
+        verifyIfChangeable();
+
+        OrderItem orderItem = this.findOrderItem(orderItemId);
+        this.items.remove(orderItem);
+        this.recalculateTotals();
+    }
+
     private OrderItem findOrderItem(OrderItemId itemId) {
         Objects.requireNonNull(itemId);
         return this.items.stream()
                 .filter(i -> i.id().equals(itemId))
                 .findFirst()
-                .orElseThrow(() -> new OrderDoesNotContainItemsException(this.id, itemId));
+                .orElseThrow(() -> new OrderDoesNotContainOrderItemException(this.id, itemId));
     }
 
 
