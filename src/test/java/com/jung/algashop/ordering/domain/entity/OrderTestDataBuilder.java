@@ -1,7 +1,6 @@
 package com.jung.algashop.ordering.domain.entity;
 
 import com.jung.algashop.ordering.domain.valueobject.*;
-import com.jung.algashop.ordering.domain.valueobject.*;
 import com.jung.algashop.ordering.domain.valueobject.id.CustomerId;
 
 import java.time.LocalDate;
@@ -54,6 +53,9 @@ public class OrderTestDataBuilder {
                 order.markAsPaid();
             }
             case READY -> {
+                order.place();
+                order.markAsPaid();
+                order.markAsReady();
             }
             case CANCELED -> {
             }

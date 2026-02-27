@@ -171,6 +171,11 @@ public class Order {
         this.changeStatus(OrderStatus.PAID);
     }
 
+    public void markAsReady() {
+        this.changeStatus(OrderStatus.READY);
+        this.setReadyAt(OffsetDateTime.now());
+    }
+
     public boolean isDraft() {
         return OrderStatus.DRAFT.equals(this.status);
     }
