@@ -1,5 +1,6 @@
 package com.jung.algashop.ordering.domain.entity;
 
+import com.jung.algashop.ordering.domain.exception.OrderCannotBeEditedException;
 import com.jung.algashop.ordering.domain.exception.OrderInvalidShippingDeliveryDateException;
 import com.jung.algashop.ordering.domain.exception.OrderStatusCannotBeChangedException;
 import com.jung.algashop.ordering.domain.exception.ProductOutOfStockException;
@@ -10,6 +11,7 @@ import com.jung.algashop.ordering.domain.valueobject.id.ProductId;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.Test;
+import org.mockito.internal.matchers.Or;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -164,6 +166,34 @@ class OrderTest {
         );
 
         Assertions.assertThatExceptionOfType(ProductOutOfStockException.class).isThrownBy(addItemTask);
+    }
+
+    @Test
+    public void givenPlacedOrder_whenTryToEdit_shouldThrowException(){
+        Order order = OrderTestDataBuilder.anOrder().status(OrderStatus.PLACED).build();
+
+        Assertions.assertThatExceptionOfType(OrderCannotBeEditedException.class)
+                .isThrownBy(() -> order.addItem(ProductTestDataBuilder.aProduct().build(), null));
+        Assertions.assertThatExceptionOfType(OrderCannotBeEditedException.class)
+                .isThrownBy(() -> order.changeBilling(OrderTestDataBuilder.aBilling()));
+        Assertions.assertThatExceptionOfType(OrderCannotBeEditedException.class)
+                .isThrownBy(() -> order.changeShipping(OrderTestDataBuilder.aShipping()));
+        Assertions.assertThatExceptionOfType(OrderCannotBeEditedException.class)
+                .isThrownBy(() -> order.changeItemQuantity(order.items().iterator().next().id(),new Quantity(1)));
+        Assertions.assertThatExceptionOfType(OrderCannotBeEditedException.class)
+                .isThrownBy(() -> order.changePaymentMethod(PaymentMethod.CREDIT_CARD));
+
+    }
+
+    @Test
+    public void givenDraftOrder_whenTryToEdit_shouldAllow(){
+        Order order = OrderTestDataBuilder.anOrder().build();
+
+        Assertions.assertThatNoException().isThrownBy(() -> order.addItem(ProductTestDataBuilder.aProduct().build(), new Quantity(1)));
+        Assertions.assertThatNoException().isThrownBy(() -> order.changeBilling(OrderTestDataBuilder.aBilling()));
+        Assertions.assertThatNoException().isThrownBy(() -> order.changeShipping(OrderTestDataBuilder.aShipping()));
+        Assertions.assertThatNoException().isThrownBy(() -> order.changeItemQuantity(order.items().iterator().next().id(),new Quantity(2)));
+        Assertions.assertThatNoException().isThrownBy(() -> order.changePaymentMethod(PaymentMethod.CREDIT_CARD));
     }
 
 }

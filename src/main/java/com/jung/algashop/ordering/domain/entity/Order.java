@@ -1,10 +1,6 @@
 package com.jung.algashop.ordering.domain.entity;
 
-import com.jung.algashop.ordering.domain.exception.OrderCannotBePlacedException;
-import com.jung.algashop.ordering.domain.exception.OrderDoesNotContainItemsException;
-import com.jung.algashop.ordering.domain.exception.OrderInvalidShippingDeliveryDateException;
-import com.jung.algashop.ordering.domain.exception.OrderStatusCannotBeChangedException;
-import com.jung.algashop.ordering.domain.valueobject.*;
+import com.jung.algashop.ordering.domain.exception.*;
 import com.jung.algashop.ordering.domain.valueobject.*;
 import com.jung.algashop.ordering.domain.valueobject.id.CustomerId;
 import com.jung.algashop.ordering.domain.valueobject.id.OrderId;
@@ -64,13 +60,14 @@ public class Order {
                 Money.ZERO,
                 Quantity.ZERO,
                 null, null, null, null,
-                 null, OrderStatus.DRAFT,
+                null, OrderStatus.DRAFT,
                 null,
                 new HashSet<>()
         );
     }
 
     public void addItem(Product product, Quantity quantity) {
+        verifyIfChangeable();
         Objects.requireNonNull(product);
         Objects.requireNonNull(quantity);
 
@@ -81,7 +78,7 @@ public class Order {
                 .product(product)
                 .quantity(quantity)
                 .build();
-        if(this.items == null){
+        if (this.items == null) {
             this.items = new HashSet<>();
         }
         this.items.add(item);
@@ -89,16 +86,19 @@ public class Order {
     }
 
     public void changePaymentMethod(PaymentMethod paymentMethod) {
+        verifyIfChangeable();
         Objects.requireNonNull(paymentMethod);
         this.setPaymentMethod(paymentMethod);
     }
 
     public void changeBilling(Billing billing) {
+        verifyIfChangeable();
         Objects.requireNonNull(billing);
         this.setBilling(billing);
     }
 
     public void changeShipping(Shipping shipping) {
+        verifyIfChangeable();
         Objects.requireNonNull(shipping);
 
         if (shipping.expectedDate().isBefore(LocalDate.now())) {
@@ -108,12 +108,13 @@ public class Order {
     }
 
     public void changeItemQuantity(OrderItemId itemId, Quantity quantity) {
-           Objects.requireNonNull(itemId);
-           Objects.requireNonNull(quantity);
+        verifyIfChangeable();
+        Objects.requireNonNull(itemId);
+        Objects.requireNonNull(quantity);
 
-           OrderItem orderItem = this.findOrderItem(itemId);
-           orderItem.changeQuantity(quantity);
-           this.recalculateTotals();
+        OrderItem orderItem = this.findOrderItem(itemId);
+        orderItem.changeQuantity(quantity);
+        this.recalculateTotals();
     }
 
     private OrderItem findOrderItem(OrderItemId itemId) {
@@ -121,7 +122,7 @@ public class Order {
         return this.items.stream()
                 .filter(i -> i.id().equals(itemId))
                 .findFirst()
-                .orElseThrow(() -> new OrderDoesNotContainItemsException(this.id,itemId));
+                .orElseThrow(() -> new OrderDoesNotContainItemsException(this.id, itemId));
     }
 
 
@@ -131,21 +132,27 @@ public class Order {
         this.changeStatus(OrderStatus.PLACED);
     }
 
+    private void verifyIfChangeable () {
+        if (!this.isDraft()) {
+            throw new OrderCannotBeEditedException(this.id(), this.status());
+        }
+    }
+
 
     private void verifyIfCanBePlaced() {
-        if(this.items.isEmpty()){
+        if (this.items.isEmpty()) {
             throw OrderCannotBePlacedException.becauseHasNoItems(this.id());
         }
-        if(this.shipping() == null){
+        if (this.shipping() == null) {
             throw OrderCannotBePlacedException.becauseHasNoShippingInfo(this.id());
         }
-        if(this.paymentMethod == null){
+        if (this.paymentMethod == null) {
             throw OrderCannotBePlacedException.becauseHasNoPaymentMethod(this.id());
         }
-        if(this.billing == null){
+        if (this.billing == null) {
             throw OrderCannotBePlacedException.becauseHasNoBillingInfo(this.id());
         }
-        if(this.customerId == null){
+        if (this.customerId == null) {
             throw OrderCannotBePlacedException.becauseHasNoCustomer(this.id());
         }
     }
@@ -245,7 +252,6 @@ public class Order {
     private void setPaymentMethod(PaymentMethod paymentMethod) {
         this.paymentMethod = paymentMethod;
     }
-
 
 
     private void setItems(Set<OrderItem> items) {
