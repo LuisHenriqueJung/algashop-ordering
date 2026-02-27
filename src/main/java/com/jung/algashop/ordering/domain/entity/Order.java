@@ -176,6 +176,11 @@ public class Order {
         this.setReadyAt(OffsetDateTime.now());
     }
 
+    public void cancel() {
+        this.changeStatus(OrderStatus.CANCELED);
+        this.setCancelledAt(OffsetDateTime.now());
+    }
+
     public boolean isDraft() {
         return OrderStatus.DRAFT.equals(this.status);
     }
@@ -186,6 +191,10 @@ public class Order {
 
     public boolean isPaid() {
         return OrderStatus.PAID.equals(this.status);
+    }
+
+    public boolean isCanceled() {
+        return OrderStatus.CANCELED.equals(this.status);
     }
 
     private void recalculateTotals() {
