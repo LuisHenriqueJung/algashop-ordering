@@ -22,3 +22,4 @@ public class ErrorMessages {
     public static final String PRODUCT_OUT_OF_STOCK = "Product %s is out of stock";
     public static final String ERROR_ORDER_CANNOT_BE_EDITED = "Order %s with status %s cannot be edited";
 }
+
