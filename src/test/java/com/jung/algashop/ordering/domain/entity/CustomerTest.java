@@ -1,9 +1,9 @@
 package com.jung.algashop.ordering.domain.entity;
 
-import com.jung.algashop.ordering.domain.exception.CustomerArchivedException;
-import com.jung.algashop.ordering.domain.exception.LoyaltyPointsShouldBePositiveException;
-import com.jung.algashop.ordering.domain.valueobject.*;
-import com.jung.algashop.ordering.domain.valueobject.*;
+import com.jung.algashop.ordering.domain.model.entity.Customer;
+import com.jung.algashop.ordering.domain.model.exception.CustomerArchivedException;
+import com.jung.algashop.ordering.domain.model.exception.LoyaltyPointsShouldBePositiveException;
+import com.jung.algashop.ordering.domain.model.valueobject.*;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 

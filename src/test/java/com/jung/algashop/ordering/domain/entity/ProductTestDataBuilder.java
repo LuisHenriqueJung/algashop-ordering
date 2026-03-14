@@ -1,9 +1,9 @@
 package com.jung.algashop.ordering.domain.entity;
 
-import com.jung.algashop.ordering.domain.valueobject.Money;
-import com.jung.algashop.ordering.domain.valueobject.Product;
-import com.jung.algashop.ordering.domain.valueobject.ProductName;
-import com.jung.algashop.ordering.domain.valueobject.id.ProductId;
+import com.jung.algashop.ordering.domain.model.valueobject.Money;
+import com.jung.algashop.ordering.domain.model.valueobject.Product;
+import com.jung.algashop.ordering.domain.model.valueobject.ProductName;
+import com.jung.algashop.ordering.domain.model.valueobject.id.ProductId;
 
 import java.util.UUID;
 

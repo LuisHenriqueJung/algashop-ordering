@@ -1,14 +1,15 @@
 package com.jung.algashop.ordering.domain.factory;
 
-import com.jung.algashop.ordering.domain.entity.Order;
 import com.jung.algashop.ordering.domain.entity.OrderTestDataBuilder;
-import com.jung.algashop.ordering.domain.entity.PaymentMethod;
 import com.jung.algashop.ordering.domain.entity.ProductTestDataBuilder;
-import com.jung.algashop.ordering.domain.valueobject.Billing;
-import com.jung.algashop.ordering.domain.valueobject.Product;
-import com.jung.algashop.ordering.domain.valueobject.Quantity;
-import com.jung.algashop.ordering.domain.valueobject.Shipping;
-import com.jung.algashop.ordering.domain.valueobject.id.CustomerId;
+import com.jung.algashop.ordering.domain.model.entity.Order;
+import com.jung.algashop.ordering.domain.model.entity.PaymentMethod;
+import com.jung.algashop.ordering.domain.model.factory.OrderFactory;
+import com.jung.algashop.ordering.domain.model.valueobject.Billing;
+import com.jung.algashop.ordering.domain.model.valueobject.Product;
+import com.jung.algashop.ordering.domain.model.valueobject.Quantity;
+import com.jung.algashop.ordering.domain.model.valueobject.Shipping;
+import com.jung.algashop.ordering.domain.model.valueobject.id.CustomerId;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 

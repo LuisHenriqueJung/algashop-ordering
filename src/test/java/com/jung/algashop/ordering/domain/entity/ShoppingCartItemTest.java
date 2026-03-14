@@ -1,9 +1,11 @@
 package com.jung.algashop.ordering.domain.entity;
 
-import com.jung.algashop.ordering.domain.exception.ShoppingCartItemIncompatibleProductException;
-import com.jung.algashop.ordering.domain.valueobject.Money;
-import com.jung.algashop.ordering.domain.valueobject.Quantity;
-import com.jung.algashop.ordering.domain.valueobject.id.ShoppingCartId;
+import com.jung.algashop.ordering.domain.model.entity.ShoppingCartItem;
+import com.jung.algashop.ordering.domain.model.exception.ShoppingCartItemIncompatibleProductException;
+import com.jung.algashop.ordering.domain.model.valueobject.Money;
+import com.jung.algashop.ordering.domain.model.valueobject.Quantity;
+import com.jung.algashop.ordering.domain.model.valueobject.id.ShoppingCartId;
+import com.jung.algashop.ordering.domain.model.valueobject.id.ShoppingCartItemId;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -47,7 +49,7 @@ class ShoppingCartItemTest {
     @Test
     public void givenItemsWithSameId_whenCompare_shouldBeEqual() {
         ShoppingCartItem existing1 = ShoppingCartItem.existing()
-                .id(new com.jung.algashop.ordering.domain.valueobject.id.ShoppingCartItemId("same"))
+                .id(new ShoppingCartItemId("same"))
                 .shoppingCartId(new ShoppingCartId("cart"))
                 .productId(ProductTestDataBuilder.aProduct().build().id())
                 .productName(ProductTestDataBuilder.aProduct().build().name())
@@ -58,7 +60,7 @@ class ShoppingCartItemTest {
                 .build();
 
         ShoppingCartItem existing2 = ShoppingCartItem.existing()
-                .id(new com.jung.algashop.ordering.domain.valueobject.id.ShoppingCartItemId("same"))
+                .id(new ShoppingCartItemId("same"))
                 .shoppingCartId(new ShoppingCartId("cart2"))
                 .productId(ProductTestDataBuilder.aProductAltMousePad().build().id())
                 .productName(ProductTestDataBuilder.aProductAltMousePad().build().name())

@@ -1,10 +1,11 @@
 package com.jung.algashop.ordering.domain.valueobject;
 
+import com.jung.algashop.ordering.domain.model.valueobject.BirthDate;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class BirthDateTest {
     

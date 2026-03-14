@@ -1,7 +1,8 @@
 package com.jung.algashop.ordering.domain.entity;
 
-import com.jung.algashop.ordering.domain.valueobject.Quantity;
-import com.jung.algashop.ordering.domain.valueobject.id.OrderId;
+import com.jung.algashop.ordering.domain.model.entity.OrderItem;
+import com.jung.algashop.ordering.domain.model.valueobject.Quantity;
+import com.jung.algashop.ordering.domain.model.valueobject.id.OrderId;
 import org.junit.jupiter.api.Test;
 
 class OrderItemTest {

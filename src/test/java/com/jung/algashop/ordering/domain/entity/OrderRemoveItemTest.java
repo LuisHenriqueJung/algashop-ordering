@@ -1,11 +1,14 @@
 package com.jung.algashop.ordering.domain.entity;
 
-import com.jung.algashop.ordering.domain.exception.OrderCannotBeEditedException;
-import com.jung.algashop.ordering.domain.exception.OrderDoesNotContainOrderItemException;
-import com.jung.algashop.ordering.domain.valueobject.Money;
-import com.jung.algashop.ordering.domain.valueobject.Quantity;
-import com.jung.algashop.ordering.domain.valueobject.id.CustomerId;
-import com.jung.algashop.ordering.domain.valueobject.id.OrderItemId;
+import com.jung.algashop.ordering.domain.model.entity.Order;
+import com.jung.algashop.ordering.domain.model.entity.OrderItem;
+import com.jung.algashop.ordering.domain.model.entity.OrderStatus;
+import com.jung.algashop.ordering.domain.model.exception.OrderCannotBeEditedException;
+import com.jung.algashop.ordering.domain.model.exception.OrderDoesNotContainOrderItemException;
+import com.jung.algashop.ordering.domain.model.valueobject.Money;
+import com.jung.algashop.ordering.domain.model.valueobject.Quantity;
+import com.jung.algashop.ordering.domain.model.valueobject.id.CustomerId;
+import com.jung.algashop.ordering.domain.model.valueobject.id.OrderItemId;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 

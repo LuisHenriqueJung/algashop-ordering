@@ -1,14 +1,17 @@
 package com.jung.algashop.ordering.domain.entity;
 
-import com.jung.algashop.ordering.domain.exception.ProductOutOfStockException;
-import com.jung.algashop.ordering.domain.exception.ShoppingCartDoesNotContainItemException;
-import com.jung.algashop.ordering.domain.exception.ShoppingCartDoesNotContainProductException;
-import com.jung.algashop.ordering.domain.valueobject.Money;
-import com.jung.algashop.ordering.domain.valueobject.Product;
-import com.jung.algashop.ordering.domain.valueobject.ProductName;
-import com.jung.algashop.ordering.domain.valueobject.Quantity;
-import com.jung.algashop.ordering.domain.valueobject.id.CustomerId;
-import com.jung.algashop.ordering.domain.valueobject.id.ShoppingCartId;
+import com.jung.algashop.ordering.domain.model.entity.ShoppingCart;
+import com.jung.algashop.ordering.domain.model.entity.ShoppingCartItem;
+import com.jung.algashop.ordering.domain.model.exception.ProductOutOfStockException;
+import com.jung.algashop.ordering.domain.model.exception.ShoppingCartDoesNotContainItemException;
+import com.jung.algashop.ordering.domain.model.exception.ShoppingCartDoesNotContainProductException;
+import com.jung.algashop.ordering.domain.model.valueobject.Money;
+import com.jung.algashop.ordering.domain.model.valueobject.Product;
+import com.jung.algashop.ordering.domain.model.valueobject.ProductName;
+import com.jung.algashop.ordering.domain.model.valueobject.Quantity;
+import com.jung.algashop.ordering.domain.model.valueobject.id.CustomerId;
+import com.jung.algashop.ordering.domain.model.valueobject.id.ShoppingCartId;
+import com.jung.algashop.ordering.domain.model.valueobject.id.ShoppingCartItemId;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -78,7 +81,7 @@ class ShoppingCartTest {
         ShoppingCart cart = ShoppingCart.startShopping(new CustomerId());
 
         Assertions.assertThatExceptionOfType(ShoppingCartDoesNotContainItemException.class)
-                .isThrownBy(() -> cart.removeItem(new com.jung.algashop.ordering.domain.valueobject.id.ShoppingCartItemId("missing")));
+                .isThrownBy(() -> cart.removeItem(new ShoppingCartItemId("missing")));
     }
 
     @Test

@@ -1,9 +1,11 @@
 package com.jung.algashop.ordering.domain.valueobject;
 
-import com.jung.algashop.ordering.domain.exception.LoyaltyPointsShouldBePositiveException;
+import com.jung.algashop.ordering.domain.model.exception.LoyaltyPointsShouldBePositiveException;
+import com.jung.algashop.ordering.domain.model.valueobject.LoyaltyPoints;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class LoyaltyPointsTest {
 
