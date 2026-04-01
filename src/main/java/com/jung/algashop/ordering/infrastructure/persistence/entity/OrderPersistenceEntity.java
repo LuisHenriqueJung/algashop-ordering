@@ -41,15 +41,15 @@ public class OrderPersistenceEntity {
 
     @CreatedBy
     private UUID createdByUserId;
-
     @LastModifiedDate
     private OffsetDateTime lastModifiedAt;
-
     @LastModifiedBy
     private UUID lastModifiedByUserId;
 
+
     @Version
     private Long version;
+
 
     @Embedded
     @AttributeOverrides({
@@ -131,5 +131,53 @@ public class OrderPersistenceEntity {
         item.setOrder(this);
         this.getItems().add(item);
     }
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private Set<OrderItemPersistenceEntity> items = new HashSet<>();
+
+    @Builder
+    public OrderPersistenceEntity(Long id, UUID customerId, BigDecimal totalAmount, Integer totalItems, String status, String paymentMethod, OffsetDateTime placedAt, OffsetDateTime paidAt, OffsetDateTime canceledAt, OffsetDateTime readyAt, UUID createdByUserId, OffsetDateTime lastModifiedAt, UUID lastModifiedByUserId, Long version, BillingEmbeddable billing, ShippingEmbeddable shipping, Set<OrderItemPersistenceEntity> items) {
+        this.id = id;
+        this.customerId = customerId;
+        this.totalAmount = totalAmount;
+        this.totalItems = totalItems;
+        this.status = status;
+        this.paymentMethod = paymentMethod;
+        this.placedAt = placedAt;
+        this.paidAt = paidAt;
+        this.canceledAt = canceledAt;
+        this.readyAt = readyAt;
+        this.createdByUserId = createdByUserId;
+        this.lastModifiedAt = lastModifiedAt;
+        this.lastModifiedByUserId = lastModifiedByUserId;
+        this.version = version;
+        this.billing = billing;
+        this.shipping = shipping;
+        this.replaceItems(items);
+    }
+
+    public void replaceItems(Set<OrderItemPersistenceEntity> items) {
+        if (items == null || items.isEmpty()) {
+            this.setItems(new HashSet<>());
+            return;
+        }
+
+        items.forEach(i -> i.setOrder(this));
+        this.setItems(items);
+    }
+
+    public void addItem(OrderItemPersistenceEntity item) {
+        if (item == null) {
+            return;
+        }
+
+        if (this.getItems() == null) {
+            this.setItems(new HashSet<>());
+        }
+
+        item.setOrder(this);
+        this.getItems().add(item);
+    }
+
+}
 
 }
