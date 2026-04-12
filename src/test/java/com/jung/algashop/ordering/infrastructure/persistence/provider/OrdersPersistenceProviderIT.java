@@ -13,6 +13,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @DataJpaTest
 @Import({
@@ -21,7 +23,8 @@ import org.springframework.context.annotation.Import;
         OrderPersistenceEntityDisassembler.class,
         SpringDataAuditing.class
 })
-class OrdersPersistenceProviderIT {
+class
+OrdersPersistenceProviderIT {
 
     private OrdersPersistenceProvider persistenceProvider;
     private OrderPersistenceEntityRepository entityRepository;
@@ -58,5 +61,17 @@ class OrdersPersistenceProviderIT {
         Assertions.assertThat(persistenceEntity.getLastModifiedAt()).isNotNull();
         Assertions.assertThat(persistenceEntity.getLastModifiedByUserId()).isNotNull();
 
+    }
+
+
+    @Test
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    void shouldAddFindAndNotFailWhenNoTransaction() {
+        Order order = OrderTestDataBuilder.anOrder().build();
+        persistenceProvider.add(order);
+
+        Assertions.assertThatNoException().isThrownBy(
+                ()-> persistenceProvider.ofId(order.id()).orElseThrow()
+        );
     }
 }

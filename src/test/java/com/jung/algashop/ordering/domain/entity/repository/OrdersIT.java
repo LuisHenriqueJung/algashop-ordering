@@ -77,7 +77,7 @@ class OrdersIT {
 
 
     @Test
-    public void shouldNotAllowStaleUpdates() {
+    void shouldNotAllowStaleUpdates() {
         Order order = OrderTestDataBuilder.anOrder().status(OrderStatus.PLACED).build();
         orders.add(order);
 
@@ -98,4 +98,28 @@ class OrdersIT {
         Assertions.assertThat(savedOrder.paidAt()).isNotNull();
 
     }
+
+    @Test
+    void shouldCountExistingOrders() {
+        Assertions.assertThat(orders.count()).isZero();
+
+        Order order1 = OrderTestDataBuilder.anOrder().build();
+        Order order2 = OrderTestDataBuilder.anOrder().build();
+
+        orders.add(order1);
+        orders.add(order2);
+
+        Assertions.assertThat(orders.count()).isEqualTo(2L);
+    }
+
+    @Test
+    void shouldReturnIfOrderExists() {
+        Order order = OrderTestDataBuilder.anOrder().build();
+        orders.add(order);
+
+        Assertions.assertThat(orders.exists(order.id())).isTrue();
+        Assertions.assertThat(orders.exists(new OrderId())).isFalse();
+
+    }
+
 }
