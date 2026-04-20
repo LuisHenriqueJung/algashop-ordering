@@ -89,6 +89,7 @@ public class Customer extends AbstractEventSourceEntity implements AggregateRoot
         this.setAddress(this.address().toBuilder()
                 .number("Anonymized")
                 .complement(null).build());
+        this.publishDomainEvent(new CustomerArchivedEvent(this.id(), OffsetDateTime.now()));
     }
 
     public void enablePromotionNotifications() {
