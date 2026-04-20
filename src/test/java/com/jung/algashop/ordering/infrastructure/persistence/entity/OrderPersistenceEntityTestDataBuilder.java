@@ -1,7 +1,9 @@
 package com.jung.algashop.ordering.infrastructure.persistence.entity;
 
-import com.jung.algashop.ordering.domain.model.utility.IdGenerator;
-import com.jung.algashop.ordering.infrastructure.persistence.entity.OrderPersistenceEntity.OrderPersistenceEntityBuilder;
+import com.jung.algashop.ordering.domain.model.IdGenerator;
+import com.jung.algashop.ordering.infrastructure.persistence.order.OrderItemPersistenceEntity;
+import com.jung.algashop.ordering.infrastructure.persistence.order.OrderPersistenceEntity;
+import com.jung.algashop.ordering.infrastructure.persistence.order.OrderPersistenceEntity.OrderPersistenceEntityBuilder;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -15,7 +17,7 @@ public class OrderPersistenceEntityTestDataBuilder {
     public static OrderPersistenceEntityBuilder existingOrder() {
         return OrderPersistenceEntity.builder()
                 .id(IdGenerator.generateTSID().toLong())
-                .customerId(IdGenerator.generateTimeBasedUUID())
+                .customer(CustomerPersistenceEntityTestDataBuilder.aCustomer().build())
                 .totalItems(3)
                 .totalAmount(new BigDecimal(1250))
                 .status("DRAFT")

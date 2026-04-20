@@ -1,17 +1,23 @@
 package com.jung.algashop.ordering.infrastructure.persistence.provider;
 
 
-import com.jung.algashop.ordering.domain.entity.OrderTestDataBuilder;
-import com.jung.algashop.ordering.domain.model.entity.Order;
-import com.jung.algashop.ordering.domain.model.entity.OrderStatus;
-import com.jung.algashop.ordering.infrastructure.persistence.assembler.OrderPersistenceEntityAssembler;
-import com.jung.algashop.ordering.infrastructure.persistence.config.SpringDataAuditing;
-import com.jung.algashop.ordering.infrastructure.persistence.disassembler.OrderPersistenceEntityDisassembler;
-import com.jung.algashop.ordering.infrastructure.persistence.repository.OrderPersistenceEntityRepository;
+import com.jung.algashop.ordering.domain.model.customer.CustomerTestDataBuilder;
+import com.jung.algashop.ordering.domain.model.order.Order;
+import com.jung.algashop.ordering.domain.model.order.OrderStatus;
+import com.jung.algashop.ordering.domain.model.order.OrderTestDataBuilder;
+import com.jung.algashop.ordering.infrastructure.persistence.SpringDataAuditingConfig;
+import com.jung.algashop.ordering.infrastructure.persistence.customer.CustomerPersistenceEntityAssembler;
+import com.jung.algashop.ordering.infrastructure.persistence.customer.CustomerPersistenceEntityDisassembler;
+import com.jung.algashop.ordering.infrastructure.persistence.customer.CustomersPersistenceProvider;
+import com.jung.algashop.ordering.infrastructure.persistence.order.OrderPersistenceEntityAssembler;
+import com.jung.algashop.ordering.infrastructure.persistence.order.OrderPersistenceEntityDisassembler;
+import com.jung.algashop.ordering.infrastructure.persistence.order.OrderPersistenceEntityRepository;
+import com.jung.algashop.ordering.infrastructure.persistence.order.OrdersPersistenceProvider;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,18 +27,33 @@ import org.springframework.transaction.annotation.Transactional;
         OrdersPersistenceProvider.class,
         OrderPersistenceEntityAssembler.class,
         OrderPersistenceEntityDisassembler.class,
-        SpringDataAuditing.class
+        CustomersPersistenceProvider.class,
+        CustomerPersistenceEntityAssembler.class,
+        CustomerPersistenceEntityDisassembler.class,
+        SpringDataAuditingConfig.class
 })
-class
-OrdersPersistenceProviderIT {
+class OrdersPersistenceProviderIT {
 
     private OrdersPersistenceProvider persistenceProvider;
+    private CustomersPersistenceProvider customersPersistenceProvider;
     private OrderPersistenceEntityRepository entityRepository;
 
     @Autowired
-    public OrdersPersistenceProviderIT(OrdersPersistenceProvider persistenceProvider, OrderPersistenceEntityRepository entityRepository) {
+    public OrdersPersistenceProviderIT(OrdersPersistenceProvider persistenceProvider,
+                                       CustomersPersistenceProvider customersPersistenceProvider,
+                                       OrderPersistenceEntityRepository entityRepository) {
         this.persistenceProvider = persistenceProvider;
+        this.customersPersistenceProvider = customersPersistenceProvider;
         this.entityRepository = entityRepository;
+    }
+
+    @BeforeEach
+    public void setup() {
+        if (!customersPersistenceProvider.exists(CustomerTestDataBuilder.DEFAULT_CUSTOMER_ID)) {
+            customersPersistenceProvider.add(
+                    CustomerTestDataBuilder.existingCustomer().build()
+            );
+        }
     }
 
     @Test
@@ -63,10 +84,9 @@ OrdersPersistenceProviderIT {
 
     }
 
-
     @Test
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
-    void shouldAddFindAndNotFailWhenNoTransaction() {
+    public void shouldAddFindAndNotFailWhenNoTransaction() {
         Order order = OrderTestDataBuilder.anOrder().build();
         persistenceProvider.add(order);
 
