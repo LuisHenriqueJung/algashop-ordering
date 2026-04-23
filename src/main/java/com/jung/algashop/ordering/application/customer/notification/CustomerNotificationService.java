@@ -5,5 +5,6 @@ import java.util.UUID;
 public interface CustomerNotificationService {
     void notifyNewRegistration(NotifyNewRegistrationInput input);
 
-    public record NotifyNewRegistrationInput(UUID customerId, String firstName, String email){}
+    record NotifyNewRegistrationInput(UUID customerId, String firstName, String email) {
+    }
 }

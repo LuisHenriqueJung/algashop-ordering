@@ -17,11 +17,11 @@ public class CustomerEventListner {
 
     @EventListener
     public void handleCustomerRegisteredEvent(CustomerRegisteredEvent event) {
-        log.info("Customer archived: {}", event.customer().id().value());
+        log.info("Customer archived: {}", event.customerId().value());
         CustomerNotificationService.NotifyNewRegistrationInput input = new CustomerNotificationService.NotifyNewRegistrationInput(
-                event.customer().id().value(),
-                event.customer().fullName().firstName(),
-                event.customer().email().value()
+                event.customerId().value(),
+                event.fullName().firstName(),
+                event.email().value()
         );
 
         customerNotificationService.notifyNewRegistration(input);
