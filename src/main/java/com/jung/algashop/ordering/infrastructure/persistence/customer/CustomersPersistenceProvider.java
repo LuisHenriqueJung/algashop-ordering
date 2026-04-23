@@ -7,6 +7,7 @@ import com.jung.algashop.ordering.domain.model.customer.CustomerId;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ReflectionUtils;
@@ -23,6 +24,8 @@ public class CustomersPersistenceProvider implements Customers {
     private final CustomerPersistenceEntityRepository persistenceRepository;
     private final CustomerPersistenceEntityAssembler assembler;
     private final CustomerPersistenceEntityDisassembler disassembler;
+
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     private final EntityManager entityManager;
 
@@ -47,6 +50,9 @@ public class CustomersPersistenceProvider implements Customers {
                         (persistenceEntity) -> update(aggregateRoot, persistenceEntity),
                         () -> insert(aggregateRoot)
                 );
+
+        aggregateRoot.domainEvents().forEach(applicationEventPublisher::publishEvent);
+        aggregateRoot.clearDomainEvents();
     }
 
     @Override

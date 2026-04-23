@@ -46,8 +46,12 @@ tasks.named('test') {
 }
 
 test {
-    filter {
-        excludeTestsMatching("*IT")
+    doFirst {
+        if (filter.commandLineIncludePatterns == null || filter.commandLineIncludePatterns.isEmpty()) {
+            filter {
+                excludeTestsMatching("*IT")
+            }
+        }
     }
     jvmArgs += "-javaagent:${configurations.mockitoAgent.asPath}"
 }

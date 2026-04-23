@@ -1,11 +1,16 @@
 package com.jung.algashop.ordering.application.customer.management;
 
+import com.jung.algashop.ordering.application.customer.notification.CustomerNotificationService;
 import com.jung.algashop.ordering.domain.model.customer.CustomerArchivedException;
 import com.jung.algashop.ordering.domain.model.customer.CustomerNotFoundException;
+import com.jung.algashop.ordering.domain.model.customer.CustomerRegisteredEvent;
+import com.jung.algashop.ordering.infrastructure.listner.customer.CustomerEventListner;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
@@ -18,8 +23,14 @@ class CustomerManagementApplicationServiceIT {
     @Autowired
     private CustomerManagementApplicationService customerManagementApplicationService;
 
+    @MockitoSpyBean
+    private CustomerEventListner customerEventListner;
+
+    @MockitoSpyBean
+    private CustomerNotificationService customerNotificationService;
+
     @Test
-    public void shouldRegister() {
+    void shouldRegister() {
         CustomerInput input = CustomerInputTestDataBuilder.aCustomer().build();
 
         UUID customerId = customerManagementApplicationService.create(input);
@@ -43,6 +54,8 @@ class CustomerManagementApplicationServiceIT {
                 );
 
         Assertions.assertThat(customerOutput.getRegisteredAt()).isNotNull();
+        Mockito.verify(customerEventListner).handleCustomerRegisteredEvent(Mockito.any(CustomerRegisteredEvent.class));
+        Mockito.verify(customerNotificationService).notifyNewRegistration(Mockito.any(CustomerNotificationService.NotifyNewRegistrationInput.class));
     }
 
     @Test
