@@ -8,9 +8,9 @@ import com.jung.algashop.ordering.domain.model.order.*;
 import com.jung.algashop.ordering.domain.model.order.shipping.OriginAddressService;
 import com.jung.algashop.ordering.domain.model.order.shipping.ShippingCostService;
 import com.jung.algashop.ordering.domain.model.product.Product;
-import com.jung.algashop.ordering.domain.model.product.ProductCatalogService;
 import com.jung.algashop.ordering.domain.model.product.ProductTestDataBuilder;
 import com.jung.algashop.ordering.domain.model.shoppingcart.*;
+import com.jung.algashop.ordering.infrastructure.listner.order.OrderEventListener;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,6 +50,9 @@ class CheckoutApplicationServiceIT {
     @MockitoBean
     private ShippingCostService shippingCostService;
 
+    @MockitoBean
+    private OrderEventListener orderEventListener;
+
     @BeforeEach
     public void setup() {
         Mockito.when(shippingCostService.calculate(Mockito.any(ShippingCostService.CalculationRequest.class)))
@@ -80,6 +83,9 @@ class CheckoutApplicationServiceIT {
 
         Assertions.assertThat(orderId).isNotBlank();
         Assertions.assertThat(orders.exists(new OrderId(orderId))).isTrue();
+
+        Mockito.verify(orderEventListener)
+                .listen(Mockito.argThat((OrderPlacedEvent event) -> event.orderId().toString().equals(orderId)));
 
         Optional<Order> createdOrder = orders.ofId(new OrderId(orderId));
         Assertions.assertThat(createdOrder).isPresent();

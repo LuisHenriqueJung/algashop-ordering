@@ -7,6 +7,7 @@ import com.jung.algashop.ordering.domain.model.shoppingcart.ShoppingCarts;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ReflectionUtils;
@@ -23,6 +24,8 @@ public class ShoppingCartsPersistenceProvider implements ShoppingCarts {
     private final ShoppingCartPersistenceEntityRepository persistenceRepository;
     private final ShoppingCartPersistenceEntityAssembler assembler;
     private final ShoppingCartPersistenceEntityDisassembler disassembler;
+
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     private final EntityManager entityManager;
 
@@ -47,6 +50,9 @@ public class ShoppingCartsPersistenceProvider implements ShoppingCarts {
                         (persistenceEntity) -> update(aggregateRoot, persistenceEntity),
                         () -> insert(aggregateRoot)
                 );
+
+        aggregateRoot.domainEvents().forEach(applicationEventPublisher::publishEvent);
+        aggregateRoot.clearDomainEvents();
     }
 
     @Override
