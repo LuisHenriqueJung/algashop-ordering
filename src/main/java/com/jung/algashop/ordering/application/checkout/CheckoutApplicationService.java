@@ -1,6 +1,9 @@
 package com.jung.algashop.ordering.application.checkout;
 
 import com.jung.algashop.ordering.domain.model.commons.ZipCode;
+import com.jung.algashop.ordering.domain.model.customer.Customer;
+import com.jung.algashop.ordering.domain.model.customer.CustomerNotFoundException;
+import com.jung.algashop.ordering.domain.model.customer.Customers;
 import com.jung.algashop.ordering.domain.model.order.CheckoutService;
 import com.jung.algashop.ordering.domain.model.order.Order;
 import com.jung.algashop.ordering.domain.model.order.Orders;
@@ -26,6 +29,7 @@ import java.util.Objects;
 public class CheckoutApplicationService {
 
     private final Orders orders;
+    private final Customers customers;
     private final ShoppingCarts shoppingCarts;
     private final CheckoutService checkoutService;
 
@@ -40,14 +44,15 @@ public class CheckoutApplicationService {
     public String checkout(CheckoutInput input) {
         Objects.requireNonNull(input);
         PaymentMethod paymentMethod = PaymentMethod.valueOf(input.getPaymentMethod());
-
         ShoppingCartId shoppingCartId = new ShoppingCartId(input.getShoppingCartId());
         ShoppingCart shoppingCart = shoppingCarts.ofId(shoppingCartId)
-                .orElseThrow(() -> new ShoppingCartNotFoundException());
+                .orElseThrow(ShoppingCartNotFoundException::new);
 
+        Customer customer = customers.ofId(shoppingCart.customerId())
+                .orElseThrow(CustomerNotFoundException::new);
         var shippingCalculationResult = calculateShippingCost(input.getShipping());
 
-        Order order = checkoutService.checkout(shoppingCart,
+        Order order = checkoutService.checkout(customer, shoppingCart,
                 billingInputDisassembler.toDomainModel(input.getBilling()),
                 shippingInputDisassembler.toDomainModel(input.getShipping(), shippingCalculationResult),
                 paymentMethod);

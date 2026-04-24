@@ -1,17 +1,25 @@
 package com.jung.algashop.ordering.domain.model.order;
 
-import com.jung.algashop.ordering.domain.model.shoppingcart.ShoppingCart;
-import com.jung.algashop.ordering.domain.model.shoppingcart.ShoppingCartItem;
-import com.jung.algashop.ordering.domain.model.shoppingcart.ShoppingCartCantProceedToCheckoutException;
 import com.jung.algashop.ordering.domain.model.DomainService;
+import com.jung.algashop.ordering.domain.model.commons.Money;
+import com.jung.algashop.ordering.domain.model.customer.Customer;
 import com.jung.algashop.ordering.domain.model.product.Product;
+import com.jung.algashop.ordering.domain.model.shoppingcart.ShoppingCart;
+import com.jung.algashop.ordering.domain.model.shoppingcart.ShoppingCartCantProceedToCheckoutException;
+import com.jung.algashop.ordering.domain.model.shoppingcart.ShoppingCartItem;
+import lombok.RequiredArgsConstructor;
 
 import java.util.Set;
 
 @DomainService
+@RequiredArgsConstructor
 public class CheckoutService {
 
-    public Order checkout(ShoppingCart shoppingCart,
+    private final CustomerHaveFreeShippingSpecification customerHaveFreeShippingSpecification;
+
+    public Order checkout(
+            Customer customer,
+            ShoppingCart shoppingCart,
                           Billing billing,
                           Shipping shipping,
                           PaymentMethod paymentMethod) {
@@ -27,7 +35,12 @@ public class CheckoutService {
 
         Order order = Order.draft(shoppingCart.customerId());
         order.changeBilling(billing);
-        order.changeShipping(shipping);
+        if (hasFreeShipping(customer)) {
+            Shipping freeShipping = shipping.toBuilder().cost(Money.ZERO).build();
+            order.changeShipping(freeShipping);
+        } else {
+            order.changeShipping(shipping);
+        }
         order.changePaymentMethod(paymentMethod);
 
         for (ShoppingCartItem item : items) {
@@ -39,6 +52,10 @@ public class CheckoutService {
         shoppingCart.empty();
 
         return order;
+    }
+
+    private boolean hasFreeShipping(Customer customer) {
+        return customerHaveFreeShippingSpecification.isSatisfiedBy(customer);
     }
 
 }
