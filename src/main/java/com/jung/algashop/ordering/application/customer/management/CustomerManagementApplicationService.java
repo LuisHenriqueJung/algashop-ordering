@@ -51,7 +51,7 @@ public class CustomerManagementApplicationService {
     public CustomerOutput findById(UUID customerId) {
         Objects.requireNonNull(customerId);
         Customer customer = customers.ofId(new CustomerId(customerId))
-                .orElseThrow(() -> new CustomerNotFoundException());
+                .orElseThrow(CustomerNotFoundException::new);
 
         return mapper.convert(customer, CustomerOutput.class);
     }
@@ -62,7 +62,7 @@ public class CustomerManagementApplicationService {
         Objects.requireNonNull(rawCustomerId);
 
         Customer customer = customers.ofId(new CustomerId(rawCustomerId))
-                .orElseThrow(() -> new CustomerNotFoundException());
+                .orElseThrow(CustomerNotFoundException::new);
 
         customer.changeName(new FullName(input.getFirstName(), input.getLastName()));
         customer.changePhone(new Phone(input.getPhone()));
